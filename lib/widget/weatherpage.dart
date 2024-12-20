@@ -6,7 +6,9 @@ import 'package:weatherapp_bloc/widget/sehirsec.dart';
 import 'package:weatherapp_bloc/widget/songuncelleme.dart';
 
 class Weatherpage extends StatelessWidget {
-  const Weatherpage({super.key});
+  String kullanicininSectigiSehir = "Ankara";
+
+  Weatherpage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +23,12 @@ class Weatherpage extends StatelessWidget {
         backgroundColor: Colors.pink,
         actions: <Widget>[
           IconButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              kullanicininSectigiSehir = await Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const SehirSecWidget()));
+              debugPrint("Seçilen Şehir : $kullanicininSectigiSehir");
             },
             icon: const Icon(Icons.search),
             iconSize: 30,
@@ -35,20 +38,23 @@ class Weatherpage extends StatelessWidget {
       ),
       body: Center(
           child: ListView(
-        children: const <Widget>[
+        children: <Widget>[
           Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Center(child: LocationPage()),
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+                child: LocationPage(
+              secilenSehir: kullanicininSectigiSehir,
+            )),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(8.0),
             child: Center(child: SonguncellemeWidget()),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(8.0),
             child: Center(child: HavaDurumuResimWidget()),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(8.0),
             child: Center(child: MaxMinSicaklikWidget()),
           ),

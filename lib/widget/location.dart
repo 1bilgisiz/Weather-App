@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class LocationPage extends StatelessWidget {
-  const LocationPage({super.key});
+  final String secilenSehir;
+
+  const LocationPage({super.key, required this.secilenSehir});
+
 
   @override
   Widget build(BuildContext context) {
