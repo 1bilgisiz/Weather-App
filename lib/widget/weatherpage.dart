@@ -5,6 +5,7 @@ import 'package:weatherapp_bloc/widget/maxminsicaklik.dart';
 import 'package:weatherapp_bloc/widget/sehirsec.dart';
 import 'package:weatherapp_bloc/widget/songuncelleme.dart';
 
+// ignore: must_be_immutable
 class Weatherpage extends StatelessWidget {
   String kullanicininSectigiSehir = "Ankara";
 
