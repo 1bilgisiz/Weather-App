@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weatherapp_bloc/blocs/weather/bloc/weather_bloc_bloc.dart';
 import 'package:weatherapp_bloc/widget/havadurumu.dart';
 import 'package:weatherapp_bloc/widget/location.dart';
 import 'package:weatherapp_bloc/widget/maxminsicaklik.dart';
@@ -13,6 +15,8 @@ class Weatherpage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _weatherBloc = BlocProvider.of<WeatherBlocBloc>(context);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -29,7 +33,10 @@ class Weatherpage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => const SehirSecWidget()));
-              debugPrint("Seçilen Şehir : $kullanicininSectigiSehir");
+              if (kullanicininSectigiSehir != null) {
+                _weatherBloc
+                    .add(FetchWeatherEvent(sehirAdi: kullanicininSectigiSehir));
+              }
             },
             icon: const Icon(Icons.search),
             iconSize: 30,
@@ -38,29 +45,54 @@ class Weatherpage extends StatelessWidget {
         ],
       ),
       body: Center(
-          child: ListView(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-                child: LocationPage(
-              secilenSehir: kullanicininSectigiSehir,
-            )),
+        child: BlocProvider(
+          create: (context) => _weatherBloc,
+          child: BlocBuilder<WeatherBlocBloc, WeatherBlocState>(
+            builder: (context, state) {
+              if (state is WeatherBlocInitial) {
+                return const Center(
+                  child: Text("Lütfen şehir seçiniz"),
+                );
+              } else if (state is WeatherLoaded) {
+                final getirilenWeather = state.weather;
+
+                return ListView(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: LocationPage(
+                          secilenSehir: kullanicininSectigiSehir,
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(child: SonguncellemeWidget()),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(child: HavaDurumuResimWidget()),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(child: MaxMinSicaklikWidget()),
+                    ),
+                  ],
+                );
+              } else if (state is WeatherErrorState) {
+                return const Center(
+                  child: Text("Hata oluştu"),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Center(child: SonguncellemeWidget()),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Center(child: HavaDurumuResimWidget()),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Center(child: MaxMinSicaklikWidget()),
-          ),
-        ],
-      )),
+        ),
+      ),
     );
   }
 }

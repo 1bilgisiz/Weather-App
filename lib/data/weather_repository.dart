@@ -5,6 +5,7 @@ import 'package:weatherapp_bloc/models/weather.dart';
 class WeatherRepository {
   WeatherApiClient weatherApiClient = locator<WeatherApiClient>();
   Future<Weather?> getWeather(String sehir) async {
-    return null;
+    final int sehirID = await weatherApiClient.getLocationID(sehir);
+    return await weatherApiClient.getWeather(sehirID);
   }
 }

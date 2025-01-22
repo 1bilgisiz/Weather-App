@@ -2,9 +2,9 @@ import 'package:get_it/get_it.dart';
 import 'package:weatherapp_bloc/data/weather_api_client.dart';
 import 'package:weatherapp_bloc/data/weather_repository.dart';
 
-GetIt locator = GetIt.instance();
+final locator = GetIt.instance;
 
-void setupLocator() {
+Future<void> setUpLocator() async {
   locator.registerLazySingleton(() => WeatherRepository());
   locator.registerLazySingleton(() => WeatherApiClient());
 }

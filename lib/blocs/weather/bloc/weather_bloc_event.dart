@@ -10,7 +10,7 @@ sealed class WeatherBlocEvent extends Equatable {
 class FetchWeatherEvent extends WeatherBlocEvent {
   final String sehirAdi;
 
-  const FetchWeatherEvent(this.sehirAdi);
+  const FetchWeatherEvent({required this.sehirAdi});
 
   get city => null;
 }
