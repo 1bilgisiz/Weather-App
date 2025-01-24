@@ -54,7 +54,7 @@ class Weatherpage extends StatelessWidget {
                   child: Text("Lütfen şehir seçiniz"),
                 );
               } else if (state is WeatherLoaded) {
-                final getirilenWeather = state.weather;
+               // final getirilenWeather = state.weather;
 
                 return ListView(
                   children: <Widget>[
